@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, FlatList } from 'react-native';
+import { parse } from 'qs';
 
 export default class Exflatlist extends Component{
 
@@ -24,28 +25,51 @@ export default class Exflatlist extends Component{
                 {key:'15', nome:'Rodrigo5', idade:'39'},
             ],
             pedidos:[],
-            ceps:[]
+            ceps:[],
+            saldo:[]
 
         }; 
         this.consultaCep = this.consultaCep.bind(this);
+        this.consultaPedidos = this.consultaPedidos.bind(this);
+        
     }
     componentWillMount(){        
+        this.consultaSaldo('w8p-100', 'PA');
         //this.consultaPedidos('01/10/2019','atacado 25');
-        this.consultaCep('18085305');
+        //this.consultaCep('18085305');
     }
     componentDidMount(){
         //console.log(this.state.flatData);
-        //console.log(this.state.teste);
+        //console.log(this.state.pedidos);
 
     }
+    async consultaSaldo(pItCodigo,pCodDepos){
+        try {
+            const url = `http://192.168.0.133/busca.php?it_codigo=${pItCodigo}&cod_depos=${pCodDepos}`;
+            const resposta = await fetch(url);
+            const json = await resposta.json();
+            let s = this.state;        
+            s.saldo = json;            
+            this.setState(s); 
+            console.log(this.state.pedidos)           
+        } catch (error) {
+            console.log(error)
+        }
+    }
     async consultaPedidos(pDtImplant,pNomeAbrev){
-        const url = `http://127.0.0.1/busca.php?data_implant='${pDtImplant}'&nome_abrev='${pNomeAbrev}'`;
-        const resposta = await fetch(url);
-        const json = await resposta.json();
-        let s = this.state;        
-        s.pedidos = [json];
-        console.log(json);
-        this.setState(s);
+        try {
+            const url = `http://192.168.0.133/busca.php?data_implant=${pDtImplant}&nome_abrev=${pNomeAbrev}`;
+            const resposta = await fetch(url);
+            const json = await resposta.json();
+            let s = this.state;        
+            s.pedidos = json; //[{KEY:"1",NRPEDIDO:"10 01souza",NOMEABREV:"ATACADO 25"},{KEY:"2",NRPEDIDO:"teste",NOMEABREV:"ATACADO 25"}]; 
+            //console.log(s.pedidos);           
+            this.setState(s); 
+            console.log(this.state.pedidos)           
+        } catch (error) {
+            console.log(error)
+        }
+        
     }
     async consultaCep(pCep){
         const url = `http://viacep.com.br/ws/${pCep}/json/`;
@@ -58,12 +82,13 @@ export default class Exflatlist extends Component{
     }
     flatItem(item){        
         return(    
-            <View style={{backgroundColor:'transparent', padding:10}}>
+            <View style={{backgroundColor:'gray', padding:30}}>
                 <View style={{backgroundColor:'red', padding:10, borderColor:'black', borderWidth:3}}>
-                    <Text>{item.cep}</Text>
-                    <Text>{item.bairro}</Text>
-                </View>
-                
+                    <Text>{item.CODESTABEL}</Text>
+                    <Text>{item.CODDEPOS}</Text>
+                    <Text>{item.ITCODIGO}</Text>  
+                    <Text>{item.QUANTIDADE}</Text>                  
+                </View>                
             </View>            
         );
     }
@@ -72,9 +97,9 @@ export default class Exflatlist extends Component{
         return(
             <View style={{paddingTop:20}}>
                 <FlatList 
-                    data={this.state.ceps}                     
+                    data={this.state.saldo}                     
                     renderItem={({item})=>this.flatItem(item)}
-                    keyExtractor = {item=>item.cep}
+                    keyExtractor = {(item)=>item.ITCODIGO}
                 />
             </View>
         );
