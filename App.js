@@ -1,13 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import ExSlider from './exslider';
+import ExAsyncStorage from './exasynstorage';
 
 
 export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <ExSlider/>  
+        <ExAsyncStorage/>  
       </View>
     );
   }
