@@ -1,13 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import ExAsyncStorage from './exasynstorage';
+import ExModal from './exmodal';
 
 
 export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <ExAsyncStorage/>  
+        <ExModal/>  
       </View>
     );
   }
@@ -16,6 +16,8 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    alignItems:'center',
+    justifyContent:'center'
   },
 });
