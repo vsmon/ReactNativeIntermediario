@@ -8,9 +8,11 @@ export default class ExModal extends Component{
         super(props);
         this.state = {modalVisible:false}
     }
+    static navigationOptions = ({navigation})=>{title:navigation.state.nome}
+
     render(){
         return(
-            <View>
+            <View style={{flex:1,justifyContent:'center', alignItems:'center'}}>
                 <Modal 
                     animationType='slide'
                     visible={this.state.modalVisible}
@@ -18,6 +20,7 @@ export default class ExModal extends Component{
                 >
                     <View style={{flex:1,justifyContent:'center', alignItems:'center'}}>
                         <Text>Modal</Text>
+                        <Text>{this.props.na}</Text>
                         <Button
                             title='Fechar Modal'
                             onPress={()=>this.setState({modalVisible:false})}

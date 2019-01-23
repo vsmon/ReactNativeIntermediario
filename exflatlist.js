@@ -53,7 +53,7 @@ export default class Exflatlist extends Component{
             this.setState(s); 
             console.log(this.state.pedidos)           
         } catch (error) {
-            console.log(error)
+            alert(error);
         }
     }
     async consultaPedidos(pDtImplant,pNomeAbrev){
@@ -67,7 +67,7 @@ export default class Exflatlist extends Component{
             this.setState(s); 
             console.log(this.state.pedidos)           
         } catch (error) {
-            console.log(error)
+            alert(error);
         }
         
     }
